@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Hasil Prediksi Kredit</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <style>
+
+        body{
+            background:#f2f2f2;
+        }
+
+        .card{
+            border-radius:15px;
+            overflow:hidden;
+        }
+
+        .result-text{
+            font-size:70px;
+            font-weight:300;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container py-5">
+
+    <div class="card shadow-sm mx-auto text-center"
+         style="max-width:550px">
+
+        <!-- HEADER -->
+        <div class="card-header
+            {% if result == 'GOOD' %}
+                bg-success
+            {% else %}
+                bg-danger
+            {% endif %}
+            text-white">
+
+            <h2 class="fw-bold">
+                Hasil Prediksi Kredit
+            </h2>
+
+        </div>
+
+        <!-- BODY -->
+        <div class="card-body p-5">
+
+            <!-- HASIL -->
+            <h1 class="result-text
+                {% if result == 'GOOD' %}
+                    text-success
+                {% else %}
+                    text-danger
+                {% endif %}
+            ">
+
+                {% if result == 'GOOD' %}
+                    GOOD CREDIT
+                {% else %}
+                    BAD CREDIT
+                {% endif %}
+
+            </h1>
+
+            <!-- CONFIDENCE -->
+            <p class="lead mt-3">
+
+                Confidence:
+                <strong>{{ confidence }}%</strong>
+
+            </p>
+
+            <!-- ALERT -->
+            {% if result == 'GOOD' %}
+
+                <div class="alert alert-success mt-4">
+
+                    Nasabah ini diprediksi
+                    <strong>LAYAK</strong>
+                    mendapatkan kredit.
+
+                </div>
+
+            {% else %}
+
+                <div class="alert alert-danger mt-4">
+
+                    Nasabah ini diprediksi
+                    <strong>TIDAK LAYAK</strong>
+                    mendapatkan kredit.
+
+                </div>
+
+            {% endif %}
+
+            <!-- BUTTON -->
+            <a href="/"
+               class="btn btn-outline-primary mt-3">
+
+                Prediksi Lagi
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

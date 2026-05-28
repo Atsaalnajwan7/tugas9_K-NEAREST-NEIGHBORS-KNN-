@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Prediksi Kelayakan Kredit - KNN</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container py-5">
+    <div class="card shadow-sm mx-auto" style="max-width:600px">
+        <div class="card-header bg-primary text-white text-center">
+            <h4 class="mb-0">Prediksi Kelayakan Kredit dengan KNN</h4>
+        </div>
+        <div class="card-body">
+            <form action="/predict" method="POST">
+                <div class="mb-3">
+                    <label class="form-label">Usia</label>
+                    <input type="number" name="age" class="form-control" min="18" max="100" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Jenis Kelamin</label>
+                    <select name="sex" class="form-select">
+                        <option value="male">Laki-laki</option>
+                        <option value="female">Perempuan</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Jenis Pekerjaan (0-3)</label>
+                    <select name="job" class="form-select">
+                        <option value="0">0 - Tidak Terampil (Non-Residen)</option>
+                        <option value="1">1 - Tidak Terampil (Residen)</option>
+                        <option value="2">2 - Terampil</option>
+                        <option value="3">3 - Sangat Terampil</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Kepemilikan Rumah</label>
+                    <select name="housing" class="form-select">
+                        <option value="own">Milik Sendiri</option>
+                        <option value="rent">Sewa</option>
+                        <option value="free">Gratis</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Tabungan</label>
+                    <select name="saving" class="form-select">
+                        <option value="little">Sedikit</option>
+                        <option value="moderate">Sedang</option>
+                        <option value="quite rich">Cukup Banyak</option>
+                        <option value="rich">Banyak</option>
+                        <option value="unknown">Tidak Diketahui</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Rekening Giro</label>
+                    <select name="checking" class="form-select">
+                        <option value="little">Sedikit</option>
+                        <option value="moderate">Sedang</option>
+                        <option value="rich">Banyak</option>
+                        <option value="unknown">Tidak Diketahui</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Jumlah Kredit (DM)</label>
+                    <input type="number" name="credit_amount" class="form-control" min="100" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Durasi (bulan)</label>
+                    <input type="number" name="duration" class="form-control" min="1" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Tujuan Kredit</label>
+                    <select name="purpose" class="form-select">
+                        <option value="car">Kendaraan</option>
+                        <option value="furniture/equipment">Furnitur/Peralatan</option>
+                        <option value="radio/TV">Radio/TV</option>
+                        <option value="education">Pendidikan</option>
+                        <option value="business">Bisnis</option>
+                        <option value="repairs">Perbaikan</option>
+                        <option value="vacation/others">Lainnya</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Prediksi Sekarang</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
