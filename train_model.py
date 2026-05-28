@@ -45,18 +45,23 @@ if 'Unnamed: 0' in df.columns:
 target_col = 'Risk'
 
 if target_col not in df.columns:
+
     raise Exception(
         "\nERROR: Kolom 'Risk' tidak ditemukan!\n"
         "Gunakan dataset German Credit yang memiliki kolom Risk."
     )
 
 # ============================================================
-# HANDLE MISSING VALUE
+# CEK MISSING VALUE
 # ============================================================
 
 print("\n================ MISSING VALUE ================")
 
 print(df.isnull().sum())
+
+# ============================================================
+# HANDLE MISSING VALUE
+# ============================================================
 
 for col in df.select_dtypes(include='object').columns:
 
@@ -88,6 +93,7 @@ for col in cat_cols:
     )
 
     print(f"\n{col}")
+
     print(mapping)
 
 # ============================================================
@@ -103,6 +109,7 @@ print("\n================ FITUR ================")
 print(X.columns.tolist())
 
 print("\nDistribusi Target :")
+
 print(y.value_counts())
 
 # ============================================================
@@ -114,7 +121,7 @@ scaler = StandardScaler()
 X_scaled = scaler.fit_transform(X)
 
 # ============================================================
-# SPLIT TRAIN TEST
+# SPLIT DATA
 # ============================================================
 
 X_train, X_test, y_train, y_test = train_test_split(
@@ -128,6 +135,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 print("\n================ SPLIT DATA ================")
 
 print("Jumlah Train :", X_train.shape[0])
+
 print("Jumlah Test  :", X_test.shape[0])
 
 # ============================================================
@@ -157,43 +165,10 @@ for k in k_values:
     print(f"K = {k} | Error = {error:.4f}")
 
 # ============================================================
-# GRAFIK ELBOW
+# CARI K TERBAIK
 # ============================================================
 
-os.makedirs('static', exist_ok=True)
-
-plt.figure(figsize=(10, 5))
-
-plt.plot(
-    k_values,
-    error_rates,
-    marker='o',
-    linewidth=2
-)
-
-plt.title('Elbow Method KNN')
-
-plt.xlabel('Nilai K')
-
-plt.ylabel('Error Rate')
-
-plt.grid(True)
-
 best_k = error_rates.index(min(error_rates)) + 1
-
-plt.axvline(
-    x=best_k,
-    linestyle='--',
-    label=f'K Optimal = {best_k}'
-)
-
-plt.legend()
-
-plt.tight_layout()
-
-plt.savefig('static/elbow_method.png')
-
-plt.close()
 
 print(f"\nK Optimal : {best_k}")
 
@@ -229,6 +204,55 @@ print(
 )
 
 # ============================================================
+# BUAT FOLDER STATIC
+# ============================================================
+
+os.makedirs('static', exist_ok=True)
+
+# ============================================================
+# GRAFIK ELBOW METHOD
+# ============================================================
+
+plt.figure(figsize=(10, 5))
+
+plt.plot(
+    k_values,
+    error_rates,
+    marker='o',
+    linewidth=2,
+    color='blue'
+)
+
+plt.axvline(
+    x=best_k,
+    color='red',
+    linestyle='--',
+    label=f'K Optimal = {best_k}'
+)
+
+plt.title('Elbow Method KNN')
+
+plt.xlabel('Nilai K')
+
+plt.ylabel('Error Rate')
+
+plt.legend()
+
+plt.grid(True)
+
+plt.tight_layout()
+
+plt.savefig(
+    'static/elbow_method.png'
+)
+
+print("\nMenampilkan Grafik Elbow Method...")
+
+plt.show()
+
+plt.close()
+
+# ============================================================
 # CONFUSION MATRIX
 # ============================================================
 
@@ -238,16 +262,25 @@ cm = confusion_matrix(
 )
 
 disp = ConfusionMatrixDisplay(
-    confusion_matrix=cm
+    confusion_matrix=cm,
+    display_labels=['BAD', 'GOOD']
 )
 
-disp.plot()
+fig, ax = plt.subplots(figsize=(6, 6))
+
+disp.plot(ax=ax)
 
 plt.title('Confusion Matrix')
+
+plt.tight_layout()
 
 plt.savefig(
     'static/confusion_matrix.png'
 )
+
+print("\nMenampilkan Confusion Matrix...")
+
+plt.show()
 
 plt.close()
 
@@ -255,20 +288,38 @@ plt.close()
 # ACCURACY CHART
 # ============================================================
 
-plt.figure(figsize=(5, 5))
+plt.figure(figsize=(6, 5))
 
-plt.bar(
+bars = plt.bar(
     ['Accuracy'],
-    [accuracy]
+    [accuracy],
+    color='green'
 )
 
 plt.ylim(0, 1)
 
 plt.title('Model Accuracy')
 
+for bar in bars:
+
+    yval = bar.get_height()
+
+    plt.text(
+        bar.get_x() + bar.get_width()/2,
+        yval + 0.02,
+        f'{accuracy:.2%}',
+        ha='center'
+    )
+
+plt.tight_layout()
+
 plt.savefig(
     'static/accuracy_chart.png'
 )
+
+print("\nMenampilkan Accuracy Chart...")
+
+plt.show()
 
 plt.close()
 
@@ -315,13 +366,16 @@ print("model/label_encoders.pkl")
 print("model/best_k.pkl")
 print("model/feature_columns.pkl")
 
-print("\n================ GRAFIK ================")
+print("\n================ GRAFIK BERHASIL DIBUAT ================")
 
 print("static/elbow_method.png")
 print("static/confusion_matrix.png")
 print("static/accuracy_chart.png")
 
-print("\nMODEL BERHASIL DITRAIN!")
+print("\n================ TRAINING SELESAI ================")
+
+print("MODEL BERHASIL DITRAIN!")
 
 print("\nJalankan Flask dengan:")
-print("python app.py")
+
+print("py -3.11 app.py")
